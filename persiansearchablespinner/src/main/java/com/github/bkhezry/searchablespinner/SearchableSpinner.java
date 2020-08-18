@@ -435,6 +435,51 @@ public class SearchableSpinner extends RelativeLayout implements View.OnClickLis
 
     }
   };
+  
+   @Override
+    public Filter getFilter() {
+        return nameFilter;
+    }
+
+    /**
+     * Custom Filter implementation for custom suggestions we provide.
+     */
+    Filter nameFilter = new Filter() {
+        @Override
+        public CharSequence convertResultToString(Object resultValue) {
+            String str = ((Names) resultValue).name;
+            return str;
+        }
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            if (constraint != null) {
+                suggestions.clear();
+                for (Names names : tempItems) {
+                    if (names.name.toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        suggestions.add(names);
+                    }
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = suggestions;
+                filterResults.count = suggestions.size();
+                return filterResults;
+            } else {
+                return new FilterResults();
+            }
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            List<Names> filterList = (ArrayList<Names>) results.values;
+            if (results != null && results.count > 0) {
+                clear();
+                for (Names names : filterList) {
+                    add(names);
+                    notifyDataSetChanged();
+                }
+            }
+        }
 
   private void setupColors() {
     mRevealContainerCardView.setBackgroundColor(mRevealViewBackgroundColor);
