@@ -480,7 +480,7 @@ public class SearchableSpinner extends RelativeLayout implements View.OnClickLis
                 }
             }
         }
-	}
+	};
 
   private void setupColors() {
     mRevealContainerCardView.setBackgroundColor(mRevealViewBackgroundColor);
